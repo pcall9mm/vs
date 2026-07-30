@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kolonnen-Netz Profi</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e91e63">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 15px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            text-align: center;
+            color: #ff4081;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #1e1e1e;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .card h3 {
+            margin-top: 0;
+            color: #00bcd4;
+        }
+        button {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+        }
+        button:active {
+            background: #c2185b;
+        }
+        .status {
+            font-weight: bold;
+            margin-top: 8px;
+            display: block;
+        }
+        /* Tonnen-Farben */
+        .tonne-schwarz { border-left: 6px solid #000000; }
+        .tonne-rot { border-left: 6px solid #f44336; }
+        .tonne-weiss { border-left: 6px solid #ffffff; }
+        .tonne-gruen { border-left: 6px solid #4caf50; }
+        .tonne-blau { border-left: 6px solid #2196f3; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Kolonnen-Netz Profi</h1>
+    <p style="text-align: center; font-size: 0.9rem; color: #aaa;">Status direkt auf dem Gerät speichern</p>
+
+    <div class="card tonne-schwarz">
+        <h3>Restmüll (Schwarz)</h3>
+        <span id="status-schwarz" class="status" style="color: #bbb;">Nicht geleert</span>
+        <button onclick="toggleStatus('schwarz')">Status ändern</button>
+    </div>
+
+    <div class="card tonne-rot">
+        <h3>Restmüll (Rot)</h3>
+        <span id="status-rot" class="status" style="color: #bbb;">Nicht geleert</span>
+        <button onclick="toggleStatus('rot')">Status ändern</button>
+    </div>
+
+    <div class="card tonne-weiss">
+        <h3>Restmüll (Weiß)</h3>
+        <span id="status-weiss" class="status" style="color: #bbb;">Nicht geleert</span>
+        <button onclick="toggleStatus('weiss')">Status ändern</button>
+    </div>
+
+    <div class="card tonne-gruen">
+        <h3>Biomüll (Grün)</h3>
+        <span id="status-gruen" class="status" style="color: #bbb;">Nicht geleert</span>
+        <button onclick="toggleStatus('gruen')">Status ändern</button>
+    </div>
+
+    <div class="card tonne-blau">
+        <h3>Papiertonne (Blau)</h3>
+        <span id="status-blau" class="status" style="color: #bbb;">Nicht geleert</span>
+        <button onclick="toggleStatus('blau')">Status ändern</button>
+    </div>
+</div>
+
+<script>
+    const tonnen = ['schwarz', 'rot', 'weiss', 'gruen', 'blau'];
+
+    // Beim Start gespeicherten Status laden
+    window.onload = function() {
+        tonnen.forEach(t => {
+            let saved = localStorage.getItem('tonne_' + t);
+            if (saved === 'geleert') {
+                setGeleert(t, true);
+            }
+        });
+    };
+
+    function toggleStatus(t) {
+        let span = document.getElementById('status-' + t);
+        if (span.innerText === 'Nicht geleert') {
+            setGeleert(t, true);
+            localStorage.setItem('tonne_' + t, 'geleert');
+        } else {
+            setNichtGeleert(t, true);
+            localStorage.setItem('tonne_' + t, 'nicht');
+        }
+    }
+
+    function setGeleert(t, animate) {
+        let span = document.getElementById('status-' + t);
+        span.innerText = 'Geleert ✔';
+        span.style.color = '#4caf50';
+    }
+
+    function setNichtGeleert(t, animate) {
+        let span = document.getElementById('status-' + t);
+        span.innerText = 'Nicht geleert';
+        span.style.color = '#bbb';
+    }
+</script>
+
+</body>
+</html>
